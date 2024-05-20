@@ -14,6 +14,7 @@ useEffect(() => {
   // Set the userId state
   setUserId(userId);
 }, []);
+console.log(userId)
 
   useEffect(() => {
     // Get the last update time from localStorage
