@@ -6,13 +6,7 @@ import leaf from './assets/leaf.png'
 const App= () => {
   const [balance, setBalance] = useState(0);
 const [userId, setUserId] = useState(null);
-useEffect(() => {
-    // Ensure Telegram Web App is available
-    if (window.Telegram.WebApp) {
-      const initData = window.Telegram.WebApp.initDataUnsafe;
-      setUserId(initData.user?.id);
-    }
-  }, []);
+
 console.log(userId)
 
   useEffect(() => {
