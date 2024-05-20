@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import queryString from 'query-string';
 import logo from "./assets/logo.png"
 import tree from './assets/tree.png'
 import leaf from './assets/leaf.png'
 const App= () => {
   const [balance, setBalance] = useState(0);
+const [userId, setUserId] = useState(null);
+useEffect(() => {
+  const currentUrl = window.location.href;
+  const parsedUrl = queryString.parseUrl(currentUrl);
+  const userId = parsedUrl.query.userId;
+
+  // Set the userId state
+  setUserId(userId);
+}, []);
 
   useEffect(() => {
     // Get the last update time from localStorage
@@ -58,11 +68,39 @@ const App= () => {
       <div id='claim'> Claim </div>
 
     </div>
-
+    <p>User ID: {userId}</p>
     </>
   );
 };
 
 export default App;
 
+
+// import React, { useEffect, useState } from 'react';
+// import queryString from 'query-string';
+
+// const App = () => {
+//   const [userId, setUserId] = useState(null);
+
+//   useEffect(() => {
+//     const currentUrl = window.location.href;
+//     const parsedUrl = queryString.parseUrl(currentUrl);
+//     const userId = parsedUrl.query.userId;
+
+//     // Set the userId state
+//     setUserId(userId);
+//   }, []);
+
+//   return (
+//     <div>
+//       {userId ? (
+//         <p>User ID: {userId}</p>
+//       ) : (
+//         <p>User ID not found</p>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default App;
 
