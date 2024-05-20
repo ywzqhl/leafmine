@@ -12,7 +12,7 @@ const App= () => {
 
     if (lastUpdate) {
       const elapsedSeconds = Math.floor((currentTime - parseInt(lastUpdate, 10)) / 1000);
-      setBalance(currentBalance + elapsedSeconds);
+      setBalance(currentBalance + elapsedSeconds*0.0002);
     } else {
       setBalance(currentBalance);
     }
