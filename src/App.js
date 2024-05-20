@@ -20,7 +20,7 @@ const App= () => {
     // Update the balance every second
     const interval = setInterval(() => {
       setBalance(prevBalance => {
-        const newBalance = prevBalance + 1;
+        const newBalance = prevBalance + 0.0002;
         localStorage.setItem('balance', newBalance);
         localStorage.setItem('lastUpdate', Date.now());
         return newBalance;
@@ -37,7 +37,7 @@ const App= () => {
     <div className='storage'>In Storage :</div>
     <div className='head'>
       <img className='logo' src={logo}></img>
-      <div className='balance'>{balance}</div>
+      <div className='balance'>{balance.toFixed(4)}</div>
     </div>
     <div className='tree' >
     <img src={tree}>
