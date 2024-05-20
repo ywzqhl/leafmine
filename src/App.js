@@ -7,13 +7,12 @@ const App= () => {
   const [balance, setBalance] = useState(0);
 const [userId, setUserId] = useState(null);
 useEffect(() => {
-  const currentUrl = window.location.href;
-  const parsedUrl = queryString.parseUrl(currentUrl);
-  const userId = parsedUrl.query.userId;
-
-  // Set the userId state
-  setUserId(userId);
-}, []);
+    // Ensure Telegram Web App is available
+    if (window.Telegram.WebApp) {
+      const initData = window.Telegram.WebApp.initDataUnsafe;
+      setUserId(initData.user?.id);
+    }
+  }, []);
 console.log(userId)
 
   useEffect(() => {
