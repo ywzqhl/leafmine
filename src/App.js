@@ -6,23 +6,29 @@ import refer from './assets/ecologist.png'
 import mission from './assets/target.png'
 import walle from './assets/wallet.png'
 import leaf from './assets/leaf.png';
-import axios from 'axios'
+
+
 import { Outlet, Link } from "react-router-dom";
+
+import axios from 'axios';
+
 
 const App = () => {
   const [balance, setBalance] = useState(0);
-  const [user, setUser] = useState(0);
+  const [user, setUser] = useState({ tokens: 0 }); // Initialize user state properly
   const [wallet, setWallet] = useState(0);
-  const [userId, setUserId] = useState();
+  // const [userId, setUserId] = useState();
   const [total, setTotal] = useState(0);
   
 
+
+  const [userId, setUserId] = useState(872108881);
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       const initData = window.Telegram.WebApp.initDataUnsafe;
       const userIdFromTelegram = initData.user && initData.user.id;
-    
+
       if (userIdFromTelegram) {
         localStorage.setItem('username', userIdFromTelegram);
         setUserId(userIdFromTelegram);
@@ -38,24 +44,29 @@ const App = () => {
 
   useEffect(() => {
     const lastUpdate = localStorage.getItem('lastUpdate');
+
     const to = localStorage.getItem('wall');
     setTotal(to);
 
-    
     const currentBalance = parseInt(localStorage.getItem('balance'), 10) || 0;
     const currentTime = Date.now();
 
     if (lastUpdate) {
       const elapsedSeconds = Math.floor((currentTime - parseInt(lastUpdate, 10)) / 1000);
       setBalance(currentBalance + elapsedSeconds *0.0002);
+
+      setBalance(currentBalance + elapsedSeconds);
+
     } else {
       setBalance(currentBalance);
     }
 
     const interval = setInterval(() => {
       setBalance(prevBalance => {
-        const newBalance = prevBalance + 0.0002;
+
+      
         
+        const newBalance = prevBalance + 0.0002;
         localStorage.setItem('balance', newBalance);
         localStorage.setItem('lastUpdate', Date.now());
         return newBalance;
@@ -88,10 +99,10 @@ const App = () => {
   //     });
 
   // }, [user]);
-  const handleClaim = async () => {
-    setWallet(balance+total)
-    console.log(wallet)
-    localStorage.setItem('wall',total);
+  // const handleClaim = async () => {
+  //   setWallet(balance+total)
+  //   console.log(wallet)
+  //   localStorage.setItem('wall',total);
    
     // setBalance(0)
     // try{
@@ -107,8 +118,37 @@ const App = () => {
     // }
     
     
+// =======
+//   useEffect(() => {
+//     axios.post('https://backend-bloodito-1.onrender.com/user', {
+//       username: userId
+//     })
+//       .then(res => {
+//         console.log(res.data);
+//         setUser(res.data);
+//       })
+//       .catch(err => {
+//         console.error("Error fetching user data!", err);
+//       });
+//   }, [userId]);
+
+  const handleClaim = async () => {
+    const newWallet = balance + wallet; // Calculate new wallet value
+    setWallet(newWallet);
+    console.log(newWallet);
+    // setBalance(0);
+
+    // try {
+    //   const res = await axios.post('https://backend-bloodito-1.onrender.com/claim', {
+    //     username: userId,
+    //     tokens: newWallet // Use new wallet value
+    //   });
+    //   console.log(res.data);
+    // } catch (err) {
+    //   console.error("Error claiming tokens!", err);
+    // }
+
   };
- 
 
   return (
     <>
@@ -123,11 +163,13 @@ const App = () => {
       <div className='bag'>
         <img src={leaf} alt="leaf" />
         <div>
+
           <div style={{fontSize: "20px", fontWeight: "bold"}}>
             Storage
           </div>
           <div>24 hr to fill</div>
           <div>0.02 LEAF/hour</div>
+
         </div>
         <button onClick={handleClaim} id='claim'>Mine</button>
       </div>
@@ -164,33 +206,3 @@ const App = () => {
 };
 
 export default App;
-
-
-
-
-// import queryString from 'query-string';
-
-// const App = () => {
-//   const [userId, setUserId] = useState(null);
-
-//   useEffect(() => {
-//     const currentUrl = window.location.href;
-//     const parsedUrl = queryString.parseUrl(currentUrl);
-//     const userId = parsedUrl.query.userId;
-
-//     // Set the userId state
-//     setUserId(userId);
-//   }, []);
-
-//   return (
-//     <div>
-//       {userId ? (
-//         <p>User ID: {userId}</p>
-//       ) : (
-//         <p>User ID not found</p>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default App;
