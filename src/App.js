@@ -10,13 +10,21 @@ const [userId, setUserId] = useState(null);
   // Set the userId state
   // setUserId(userId);
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const userIdFromUrl = params.get('userId');
-    if (userIdFromUrl) {
-      setUserId(userIdFromUrl);
+    if (window.Telegram && window.Telegram.WebApp) {
+      const initData = window.Telegram.WebApp.initDataUnsafe;
+      const userIdFromTelegram = initData.user && initData.user.id;
+      if (userIdFromTelegram) {
+        setUserId(userIdFromTelegram);
+      }
+    } else {
+      // Fallback to URL params
+      const params = new URLSearchParams(window.location.search);
+      const userIdFromUrl = params.get('userId');
+      if (userIdFromUrl) {
+        setUserId(userIdFromUrl);
+      }
     }
   }, []);
-
 
 console.log(userId)
 
