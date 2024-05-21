@@ -6,15 +6,11 @@ import leaf from './assets/leaf.png'
 const App= () => {
   const [balance, setBalance] = useState(0);
 const [userId, setUserId] = useState(null);
-useEffect(() => {
-  const currentUrl = window.location.href;
-  const parsedUrl = queryString.parseUrl(currentUrl);
-  const userId = parsedUrl.query.userId;
 
   // Set the userId state
   setUserId(userId);
 }, []);
-console.log(userId);
+console.log(userId)
 
   useEffect(() => {
     // Get the last update time from localStorage
