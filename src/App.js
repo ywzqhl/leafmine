@@ -69,9 +69,10 @@ const App = () => {
         // toast.error("Error fetching user data!"); 
         // setIsLoaded(false); 
     // even if there's an error, we should set loading to false
+    
       });
 
-  }, [user]);
+  }, [userId]);
   const handleClaim = async () => {
     setWallet(balance+wallet)
     console.log(wallet)
