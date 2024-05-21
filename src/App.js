@@ -64,7 +64,7 @@ eruda.init()
   useEffect(() => {
     
     axios.post('https://backend-bloodito-1.onrender.com/user',{
-      username: userID
+      username: userId
     })
       .then(res => {
         console.log(res.data)
