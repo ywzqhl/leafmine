@@ -14,7 +14,7 @@ useEffect(() => {
   // Set the userId state
   setUserId(userId);
 }, []);
-console.log(userId)
+console.log(userId);
 
   useEffect(() => {
     // Get the last update time from localStorage
@@ -77,7 +77,7 @@ console.log(userId)
 export default App;
 
 
-// import React, { useEffect, useState } from 'react';
+
 // import queryString from 'query-string';
 
 // const App = () => {
