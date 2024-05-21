@@ -8,8 +8,16 @@ const App= () => {
 const [userId, setUserId] = useState(null);
 
   // Set the userId state
-  setUserId(userId);
-}, []);
+  // setUserId(userId);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const userIdFromUrl = params.get('userId');
+    if (userIdFromUrl) {
+      setUserId(userIdFromUrl);
+    }
+  }, []);
+
+
 console.log(userId)
 
   useEffect(() => {
