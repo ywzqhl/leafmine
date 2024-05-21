@@ -12,7 +12,7 @@ eruda.init()
   const [balance, setBalance] = useState(0);
   const [user, setUser] = useState(0);
   const [wallet, setWallet] = useState(0);
-  const [userId, setUserId] = useState();
+  const [userId, setUserId] = useState(872108881);
   
 
 
