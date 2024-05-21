@@ -62,11 +62,9 @@ eruda.init()
 
 
   useEffect(() => {
-    const use = localStorage.getItem('username');
-    console.log(use)
-    setUserId(use)
+    
     axios.post('https://backend-bloodito-1.onrender.com/user',{
-      username:use
+      username: userID
     })
       .then(res => {
         console.log(res.data)
