@@ -1,14 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import queryString from 'query-string';
-import logo from "./assets/logo.png"
-import tree from './assets/tree.png'
-import leaf from './assets/leaf.png'
-const App= () => {
-  const [balance, setBalance] = useState(0);
-const [userId, setUserId] = useState(null);
+import logo from "./assets/logo.png";
+import tree from './assets/tree.png';
+import leaf from './assets/leaf.png';
+import axios from 'axios'
 
-  // Set the userId state
-  // setUserId(userId);
+const App = () => {
+  const [balance, setBalance] = useState(0);
+  const [user, setUser] = useState(0);
+  const [wallet, setWallet] = useState(0);
+  const [userId, setUserId] = useState(59700617);
+  useEffect(() => {
+    axios.post('http://localhost:5000/user',{
+      username:userId
+    })
+      .then(res => {
+        console.log(res.data)
+        setUser(res.data);
+        // setIsLoaded(false); 
+   // set loading to false after fetching the data
+      })
+      .catch(err => {
+        // Handle the error here (for example, show a toast notification)
+        // toast.error("Error fetching user data!"); 
+        // setIsLoaded(false); 
+    // even if there's an error, we should set loading to false
+      });
+
+  }, [user]);
+
+
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       const initData = window.Telegram.WebApp.initDataUnsafe;
@@ -17,7 +37,6 @@ const [userId, setUserId] = useState(null);
         setUserId(userIdFromTelegram);
       }
     } else {
-      // Fallback to URL params
       const params = new URLSearchParams(window.location.search);
       const userIdFromUrl = params.get('userId');
       if (userIdFromUrl) {
@@ -26,67 +45,81 @@ const [userId, setUserId] = useState(null);
     }
   }, []);
 
-console.log(userId)
-
   useEffect(() => {
-    // Get the last update time from localStorage
     const lastUpdate = localStorage.getItem('lastUpdate');
+    
     const currentBalance = parseInt(localStorage.getItem('balance'), 10) || 0;
     const currentTime = Date.now();
 
     if (lastUpdate) {
       const elapsedSeconds = Math.floor((currentTime - parseInt(lastUpdate, 10)) / 1000);
-      setBalance(currentBalance + elapsedSeconds*0.0002);
+      setBalance(currentBalance + elapsedSeconds *1);
     } else {
       setBalance(currentBalance);
     }
 
-    // Update the balance every second
     const interval = setInterval(() => {
       setBalance(prevBalance => {
-        const newBalance = prevBalance + 0.0002;
+        const newBalance = prevBalance + 1;
         localStorage.setItem('balance', newBalance);
         localStorage.setItem('lastUpdate', Date.now());
         return newBalance;
       });
     }, 1000);
 
-    // Clean up the interval when the component unmounts
     return () => clearInterval(interval);
   }, []);
 
+  const handleClaim = async () => {
+    setWallet(balance+wallet)
+    console.log(wallet)
+   
+    setBalance(0)
+    try{
+      const res = await axios.post('http://localhost:5000/claim',{
+        username:userId,
+        tokens:wallet
+      });
+      console.log(res.data);
+      // setWallet(res.data[46].tokens);
+    }
+    catch(err){
+      console.log(err)
+    }
+    
+    
+  };
+ 
+
   return (
     <>
-
-    <div className='storage'>In Storage :</div>
-    <div className='head'>
-      <img className='logo' src={logo}></img>
-      <div className='balance'>{balance.toFixed(4)}</div>
-    </div>
-    <div className='tree' >
-    <img src={tree}>
-    </img>
-    </div>
-
-
-    <div className='bag'>
-      <img src={leaf}></img>
-      <div>
-        <div style={{fontSize:"20px",fontWeight:"bold"}}>
-          Storage
-        </div>
-        <div>1 hr to fill</div>
-        <div>0.02 SEED/hour</div>
+      <div className='storage'>In Storage :</div>
+      <div className='head'>
+        <img className='logo' src={logo} alt="logo" />
+        <div className='balance'>{balance.toFixed(4)}</div>
       </div>
-      <div id='claim'> Claim </div>
-
-    </div>
-    <p>User ID: {userId}</p>
+      <div className='tree'>
+        <img src={tree} alt="tree" />
+      </div>
+      <div className='bag'>
+        <img src={leaf} alt="leaf" />
+        <div>
+          <div style={{fontSize: "20px", fontWeight: "bold"}}>
+            Storage
+          </div>
+          <div>1 hr to fill</div>
+          <div>0.02 SEED/hour</div>
+        </div>
+        <button onClick={handleClaim} id='claim'>Claim</button>
+      </div>
+      <p>User ID: {userId}</p>
+      <p>Total: {user.tokens}</p>
     </>
   );
 };
 
 export default App;
+
 
 
 
@@ -116,4 +149,3 @@ export default App;
 // };
 
 // export default App;
-
