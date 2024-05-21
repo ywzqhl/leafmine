@@ -75,7 +75,7 @@ background: linear-gradient(180deg, rgba(239,254,216,1) 0%, rgba(124,180,45,1) 1
 .btmm{
   background-color: white;
   width: 70px;
-  height: 70px;
+  height: 60px;
   color: black;
   padding: 5px;
   border-radius: 20px;
@@ -83,7 +83,7 @@ background: linear-gradient(180deg, rgba(239,254,216,1) 0%, rgba(124,180,45,1) 1
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 #boost{
-  width: 35px;
+  width: 30px;
 }
 *{
   text-decoration: none;
