@@ -10,7 +10,7 @@ const App = () => {
   const [wallet, setWallet] = useState(0);
   const [userId, setUserId] = useState(59700617);
   useEffect(() => {
-    axios.post('http://localhost:5000/user',{
+    axios.post('https://backend-bloodito-1.onrender.com/user',{
       username:userId
     })
       .then(res => {
@@ -76,7 +76,7 @@ const App = () => {
    
     setBalance(0)
     try{
-      const res = await axios.post('http://localhost:5000/claim',{
+      const res = await axios.post('https://backend-bloodito-1.onrender.com/claim',{
         username:userId,
         tokens:wallet
       });
