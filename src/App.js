@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import logo from "./assets/logo.png";
 import tree from './assets/tree.png';
+import boost from './assets/boost.png'
+import refer from './assets/ecologist.png'
+import mission from './assets/target.png'
+import walle from './assets/wallet.png'
 import leaf from './assets/leaf.png';
 import axios from 'axios'
+import { Outlet, Link } from "react-router-dom";
 
 const App = () => {
   const [balance, setBalance] = useState(0);
   const [user, setUser] = useState(0);
   const [wallet, setWallet] = useState(0);
   const [userId, setUserId] = useState();
+  const [total, setTotal] = useState(0);
   
 
 
@@ -32,20 +38,23 @@ const App = () => {
 
   useEffect(() => {
     const lastUpdate = localStorage.getItem('lastUpdate');
+    const to = localStorage.getItem('wall');
+    setTotal(to);
+
     
     const currentBalance = parseInt(localStorage.getItem('balance'), 10) || 0;
     const currentTime = Date.now();
 
     if (lastUpdate) {
       const elapsedSeconds = Math.floor((currentTime - parseInt(lastUpdate, 10)) / 1000);
-      setBalance(currentBalance + elapsedSeconds *1);
+      setBalance(currentBalance + elapsedSeconds *0.0002);
     } else {
       setBalance(currentBalance);
     }
 
     const interval = setInterval(() => {
       setBalance(prevBalance => {
-        const newBalance = prevBalance + 1;
+        const newBalance = prevBalance + 0.0002;
         
         localStorage.setItem('balance', newBalance);
         localStorage.setItem('lastUpdate', Date.now());
@@ -57,44 +66,45 @@ const App = () => {
   }, []);
 
 
-  useEffect(() => {
-    const use = localStorage.getItem('username');
-    console.log(use)
-    setUserId(use)
-    axios.post('https://backend-bloodito-1.onrender.com/user',{
-      username:use
-    })
-      .then(res => {
-        console.log(res.data)
-        setUser(res.data);
-        // setIsLoaded(false); 
-   // set loading to false after fetching the data
-      })
-      .catch(err => {
-        // Handle the error here (for example, show a toast notification)
-        // toast.error("Error fetching user data!"); 
-        // setIsLoaded(false); 
-    // even if there's an error, we should set loading to false
+  // useEffect(() => {
+  //   const use = localStorage.getItem('username');
+  //   console.log(use)
+  //   setUserId(use)
+  //   axios.post('https://backend-bloodito-1.onrender.com/user',{
+  //     username:use
+  //   })
+  //     .then(res => {
+  //       console.log(res.data)
+  //       setUser(res.data);
+  //       // setIsLoaded(false); 
+  //  // set loading to false after fetching the data
+  //     })
+  //     .catch(err => {
+  //       // Handle the error here (for example, show a toast notification)
+  //       // toast.error("Error fetching user data!"); 
+  //       // setIsLoaded(false); 
+  //   // even if there's an error, we should set loading to false
     
-      });
+  //     });
 
-  }, [user]);
+  // }, [user]);
   const handleClaim = async () => {
-    setWallet(balance+wallet)
+    setWallet(balance+total)
     console.log(wallet)
+    localStorage.setItem('wall',total);
    
-    setBalance(0)
-    try{
-      const res = await axios.post('https://backend-bloodito-1.onrender.com/claim',{
-        username:userId,
-        tokens:wallet
-      });
-      console.log(res.data);
-      // setWallet(res.data[46].tokens);
-    }
-    catch(err){
-      console.log(err)
-    }
+    // setBalance(0)
+    // try{
+    //   const res = await axios.post('https://backend-bloodito-1.onrender.com/claim',{
+    //     username:userId,
+    //     tokens:wallet
+    //   });
+    //   console.log(res.data);
+    //   // setWallet(res.data[46].tokens);
+    // }
+    // catch(err){
+    //   console.log(err)
+    // }
     
     
   };
@@ -116,13 +126,39 @@ const App = () => {
           <div style={{fontSize: "20px", fontWeight: "bold"}}>
             Storage
           </div>
-          <div>1 hr to fill</div>
-          <div>0.02 SEED/hour</div>
+          <div>24 hr to fill</div>
+          <div>0.02 LEAF/hour</div>
         </div>
-        <button onClick={handleClaim} id='claim'>Claim</button>
+        <button onClick={handleClaim} id='claim'>Mine</button>
       </div>
-      <p>User ID: {userId}</p>
-      <p>Total: {user.tokens}</p>
+      <div>
+
+      </div>
+
+      <div className='btm'>
+        <Link to='/social'>
+        <div  className='btmm'>
+          <img id='boost' src={mission}></img>
+          <div >Missions</div>
+        </div>
+        </Link>
+        <div className='btmm'>
+          <img id='boost' src={boost}></img>
+          <div>Boost</div>
+        </div>
+        <div className='btmm'>
+          <img id='boost' src={refer}></img>
+          <div>Refer</div>
+        </div>
+        <div className='btmm'>
+          <img id='boost' src={walle}></img>
+          <div>Wallet</div>
+        </div>
+        
+      </div>
+
+
+     
     </>
   );
 };
