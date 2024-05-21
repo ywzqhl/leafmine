@@ -80,7 +80,7 @@ eruda.init()
     
       });
 
-  }, [user]);
+  }, [userId]);
   const handleClaim = async () => {
     setWallet(balance+wallet)
     console.log(wallet)
