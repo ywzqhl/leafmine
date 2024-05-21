@@ -8,25 +8,8 @@ const App = () => {
   const [balance, setBalance] = useState(0);
   const [user, setUser] = useState(0);
   const [wallet, setWallet] = useState(0);
-  const [userId, setUserId] = useState(59700617);
-  useEffect(() => {
-    axios.post('https://backend-bloodito-1.onrender.com/user',{
-      username:userId
-    })
-      .then(res => {
-        console.log(res.data)
-        setUser(res.data);
-        // setIsLoaded(false); 
-   // set loading to false after fetching the data
-      })
-      .catch(err => {
-        // Handle the error here (for example, show a toast notification)
-        // toast.error("Error fetching user data!"); 
-        // setIsLoaded(false); 
-    // even if there's an error, we should set loading to false
-      });
-
-  }, [user]);
+  const [userId, setUserId] = useState();
+  
 
 
   useEffect(() => {
@@ -70,6 +53,25 @@ const App = () => {
     return () => clearInterval(interval);
   }, []);
 
+
+  useEffect(() => {
+    axios.post('https://backend-bloodito-1.onrender.com/user',{
+      username:userId
+    })
+      .then(res => {
+        console.log(res.data)
+        setUser(res.data);
+        // setIsLoaded(false); 
+   // set loading to false after fetching the data
+      })
+      .catch(err => {
+        // Handle the error here (for example, show a toast notification)
+        // toast.error("Error fetching user data!"); 
+        // setIsLoaded(false); 
+    // even if there's an error, we should set loading to false
+      });
+
+  }, [user]);
   const handleClaim = async () => {
     setWallet(balance+wallet)
     console.log(wallet)
