@@ -3,8 +3,12 @@ import logo from "./assets/logo.png";
 import tree from './assets/tree.png';
 import leaf from './assets/leaf.png';
 import axios from 'axios'
+import eruda from 'eruda'
+
 
 const App = () => {
+eruda.init()
+
   const [balance, setBalance] = useState(0);
   const [user, setUser] = useState(0);
   const [wallet, setWallet] = useState(0);
