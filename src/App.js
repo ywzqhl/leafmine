@@ -16,7 +16,9 @@ const App = () => {
     if (window.Telegram && window.Telegram.WebApp) {
       const initData = window.Telegram.WebApp.initDataUnsafe;
       const userIdFromTelegram = initData.user && initData.user.id;
+    
       if (userIdFromTelegram) {
+        localStorage.setItem('username', userIdFromTelegram);
         setUserId(userIdFromTelegram);
       }
     } else {
@@ -44,6 +46,7 @@ const App = () => {
     const interval = setInterval(() => {
       setBalance(prevBalance => {
         const newBalance = prevBalance + 1;
+        
         localStorage.setItem('balance', newBalance);
         localStorage.setItem('lastUpdate', Date.now());
         return newBalance;
@@ -55,8 +58,11 @@ const App = () => {
 
 
   useEffect(() => {
+    const use = localStorage.getItem('username');
+    console.log(use)
+    setUserId(use)
     axios.post('https://backend-bloodito-1.onrender.com/user',{
-      username:userId
+      username:use
     })
       .then(res => {
         console.log(res.data)
@@ -72,7 +78,7 @@ const App = () => {
     
       });
 
-  }, [userId]);
+  }, [user]);
   const handleClaim = async () => {
     setWallet(balance+wallet)
     console.log(wallet)
